@@ -28,5 +28,5 @@ export const createProfile = async (req, res) => {
       $unset: { id: 1 },
     },
   )
-  res.json(test)
+  res.end()
 }
