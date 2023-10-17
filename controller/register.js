@@ -12,7 +12,7 @@ export const register = async (req, res) => {
   const user = await db.collection(COL).findOne({ email: req.body.email, password: req.body.password })
   res.cookie('token', createToken({ user: user._id }), {
     httpOnly: true,
-    // sameSite: 'none',
+    sameSite: 'none',
     secure: true,
     path: '/',
   })
