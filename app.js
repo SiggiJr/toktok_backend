@@ -5,19 +5,28 @@ import cors from 'cors'
 import cloudinary from 'cloudinary'
 import jwt from 'jsonwebtoken'
 import morgan from 'morgan'
+import cookieParser from 'cookie-parser'
 
 import { router as usersRouter } from './routes/users.js'
+import { router as authRouter } from './routes/auth.js'
 import { register } from './controller/register.js'
 
 const { PORT } = process.env
 const app = express()
 const upload = multer()
 
-app.use(cors())
+app.use(
+  cors({
+    credentials: true,
+    origin: true,
+  }),
+)
+app.use(cookieParser())
 app.use(express.json())
 app.use(morgan('dev'))
 
 app.use('/api', upload.none(), usersRouter)
+app.use('/api', upload.none(), authRouter)
 
 // app.post('/api/login')
 
