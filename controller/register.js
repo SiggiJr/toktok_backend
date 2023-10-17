@@ -28,6 +28,6 @@ export const createProfile = async (req, res) => {
       $unset: { id: 1 },
     },
   )
-  console.log(data)
+
   res.end()
 }
