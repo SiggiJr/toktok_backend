@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import { getDb } from '../utils/db.js'
 
 const COL = 'users'
@@ -13,5 +14,19 @@ export const register = async (req, res) => {
 }
 
 export const createProfile = async (req, res) => {
+  const data = req.body
   const db = await getDb()
+  db.collection(COL).updateOne(
+    { _id: new ObjectId(data.id) },
+    {
+      $set: { ...data },
+    },
+  )
+  db.collection(COL).updateOne(
+    { _id: new ObjectId(data.id) },
+    {
+      $unset: { id: 1 },
+    },
+  )
+  res.json(test)
 }
