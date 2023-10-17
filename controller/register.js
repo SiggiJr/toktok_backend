@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { getDb } from '../utils/db.js'
+import { createToken } from '../utils/token.js'
 
 const COL = 'users'
 
@@ -9,7 +10,12 @@ export const register = async (req, res) => {
   console.log(req.body)
   await db.collection(COL).insertOne({ email: req.body.email, password: req.body.password })
   const user = await db.collection(COL).findOne({ email: req.body.email, password: req.body.password })
-  // console.log(user._id)
+  res.cookie('token', createToken({ user: user._id }), {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: true,
+    path: '/',
+  })
   res.json(JSON.stringify({ id: user._id }))
 }
 
