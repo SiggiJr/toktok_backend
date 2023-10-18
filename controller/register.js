@@ -6,9 +6,7 @@ import { uploadImage } from '../utils/imageService.js'
 const COL = 'users'
 
 export const register = async (req, res) => {
-  console.log(req.body)
   const db = await getDb()
-  console.log(req.body)
   await db.collection(COL).insertOne({ email: req.body.email, password: req.body.password })
   const user = await db.collection(COL).findOne({ email: req.body.email, password: req.body.password })
   res.cookie('token', createToken({ user: user._id }), {
@@ -22,7 +20,6 @@ export const register = async (req, res) => {
 
 export const createProfile = async (req, res) => {
   const data = req.body
-
   try {
     const cloudinaryResult = await uploadImage(req.file.buffer)
     data.profile_image_url = cloudinaryResult.secure_url
