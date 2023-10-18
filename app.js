@@ -13,7 +13,7 @@ import { register } from './controller/register.js'
 
 const { PORT } = process.env
 const app = express()
-const upload = multer()
+const upload = multer({ storage: multer.memoryStorage() })
 
 app.use(
   cors({
@@ -25,7 +25,7 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(morgan('dev'))
 
-app.use('/api', upload.none(), usersRouter)
+app.use('/api', upload.single('profile_image'), usersRouter)
 app.use('/api', upload.none(), authRouter)
 
 // app.post('/api/login')

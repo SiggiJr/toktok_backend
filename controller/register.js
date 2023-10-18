@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 import { getDb } from '../utils/db.js'
 import { createToken } from '../utils/token.js'
+import { uploadImage } from '../utils/imageService.js'
 
 const COL = 'users'
 
@@ -21,19 +22,27 @@ export const register = async (req, res) => {
 
 export const createProfile = async (req, res) => {
   const data = req.body
-  const db = await getDb()
-  db.collection(COL).updateOne(
-    { _id: new ObjectId(data.id) },
-    {
-      $set: { ...data },
-    },
-  )
-  db.collection(COL).updateOne(
-    { _id: new ObjectId(data.id) },
-    {
-      $unset: { id: 1 },
-    },
-  )
+
+  try {
+    const cloudinaryResult = await uploadImage(req.file.buffer)
+    data.profile_image_url = cloudinaryResult.secure_url
+    data.profile_image_id = cloudinaryResult.public_id
+    const db = await getDb()
+    db.collection(COL).updateOne(
+      { _id: new ObjectId(data.id) },
+      {
+        $set: { ...data },
+      },
+    )
+    db.collection(COL).updateOne(
+      { _id: new ObjectId(data.id) },
+      {
+        $unset: { id: 1 },
+      },
+    )
+  } catch (err) {
+    console.log(err)
+  }
 
   res.end()
 }
