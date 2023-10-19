@@ -26,6 +26,7 @@ export const createProfile = async (req, res) => {
       const cloudinaryResult = await uploadImage(req.file.buffer)
       data.profile_image_url = cloudinaryResult.secure_url
       data.profile_image_id = cloudinaryResult.public_id
+      console.log(data)
     }
     const db = await getDb()
     db.collection(COL).updateOne(

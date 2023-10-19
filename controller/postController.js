@@ -21,7 +21,10 @@ export const upload = async (req, res) => {
 
 export const newPost = async (req, res) => {
   const postData = req.body
+  console.log(postData)
   const db = await getDb()
+  const post = await db.collection(COL).findOne({ image_id: postData.imageId })
+  console.log(post)
   db.collection(COL).updateOne(
     { image_id: postData.imageId },
     {
