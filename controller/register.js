@@ -21,9 +21,11 @@ export const register = async (req, res) => {
 export const createProfile = async (req, res) => {
   const data = req.body
   try {
-    const cloudinaryResult = await uploadImage(req.file.buffer)
-    data.profile_image_url = cloudinaryResult.secure_url
-    data.profile_image_id = cloudinaryResult.public_id
+    if (req.file) {
+      const cloudinaryResult = await uploadImage(req.file.buffer)
+      data.profile_image_url = cloudinaryResult.secure_url
+      data.profile_image_id = cloudinaryResult.public_id
+    }
     const db = await getDb()
     db.collection(COL).updateOne(
       { _id: new ObjectId(data.id) },

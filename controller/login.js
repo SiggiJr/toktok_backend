@@ -12,6 +12,5 @@ export const login = async (req, res) => {
     secure: true,
     path: '/',
   })
-  console.log(userData)
   res.json(userData)
 }
