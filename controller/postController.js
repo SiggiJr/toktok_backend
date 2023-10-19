@@ -18,3 +18,21 @@ export const upload = async (req, res) => {
   const post = await db.collection(COL).findOne({ profile_image_id: data.profile_image_id })
   res.json({ id: data.image_id })
 }
+
+export const newPost = async (req, res) => {
+  const postData = req.body
+  const db = await getDb()
+  db.collection(COL).updateOne(
+    { image_id: postData.imageId },
+    {
+      $set: { ...data },
+    },
+  )
+  db.collection(COL).updateOne(
+    { image_id: postData.imageId },
+    {
+      $unset: { image_id: 1 },
+    },
+  )
+  res.end()
+}
