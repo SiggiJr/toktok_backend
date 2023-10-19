@@ -12,5 +12,5 @@ export const login = async (req, res) => {
     secure: true,
     path: '/',
   })
-  res.json(userData)
+  res.json(userData._id)
 }
