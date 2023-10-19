@@ -25,7 +25,7 @@ export const newPost = async (req, res) => {
   db.collection(COL).updateOne(
     { image_id: postData.imageId },
     {
-      $set: { ...data },
+      $set: { ...postData },
     },
   )
   db.collection(COL).updateOne(

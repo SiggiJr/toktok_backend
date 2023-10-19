@@ -20,6 +20,7 @@ export const register = async (req, res) => {
 
 export const createProfile = async (req, res) => {
   const data = req.body
+  console.log(data)
   try {
     if (req.file) {
       const cloudinaryResult = await uploadImage(req.file.buffer)
