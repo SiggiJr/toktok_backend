@@ -11,7 +11,7 @@ export const getUserFeed = async (req, res) => {
   console.log(userData)
   const feed = await db
     .collection(COL)
-    .find({ nickname: { $in: userData.follower } })
+    .find({ nickname: { $in: userData.following } })
     .toArray()
   res.json(feed)
 }

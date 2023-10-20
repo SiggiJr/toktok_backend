@@ -32,7 +32,7 @@ app.use(morgan('dev'))
 
 app.use('/api/post', upload.single('selected_image'), postRouter)
 app.use('/api/auth', upload.none(), authRouter)
-// app.use('/api/user', upload.single('profile_image'), usersRouter)
+app.use('/api/user', upload.single('profile_image'), usersRouter)
 app.use('/api/feed', feedRouter)
 
 // app.post('/api/login')
