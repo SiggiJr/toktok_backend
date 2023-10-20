@@ -3,7 +3,7 @@ import { getDb } from '../utils/db.js'
 const COL = 'users'
 
 export const searchUser = async (req, res) => {
-  const input = req.body.requested_users
+  const input = req.body.requestedUser
   console.log(input)
   const regex = new RegExp(`${input}`, 'i')
   // console.log(/siggi/i)
