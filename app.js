@@ -14,6 +14,7 @@ import { router as postRouter } from './routes/postRoute.js'
 import { register } from './controller/register.js'
 import { checkToken } from './middleware/authMiddleware.js'
 import { verifyToken } from './utils/token.js'
+import { router as feedRouter } from './routes/feedRoute.js'
 
 const { PORT } = process.env
 const app = express()
@@ -31,7 +32,8 @@ app.use(morgan('dev'))
 
 app.use('/api/post', upload.single('selected_image'), postRouter)
 app.use('/api/auth', upload.none(), authRouter)
-app.use('/api/user', upload.single('profile_image'), usersRouter)
+// app.use('/api/user', upload.single('profile_image'), usersRouter)
+app.use('/api/feed', feedRouter)
 
 // app.post('/api/login')
 
