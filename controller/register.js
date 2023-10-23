@@ -45,5 +45,5 @@ export const createProfile = async (req, res) => {
     console.log(err)
   }
 
-  res.end()
+  res.json(req.body.nickname)
 }
