@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import { getDb } from '../utils/db.js'
 import { uploadImage } from '../utils/imageService.js'
 
@@ -38,4 +39,23 @@ export const newPost = async (req, res) => {
     },
   )
   res.end()
+}
+
+export const handleLike = async (req, res) => {
+  const nickname = req.body.nickname
+  const postId = req.body.postId
+  console.log(nickname, postId)
+  const db = await getDb()
+  const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
+  if (!post.likes) {
+    post.likes = [nickname]
+  } else if (post.likes.includes(nickname)) {
+    const index = post.likes.indexOf(nickname)
+    post.likes.splice(index, 1)
+  } else {
+    post.likes.push(nickname)
+  }
+  await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
+
+  res.json(post)
 }
