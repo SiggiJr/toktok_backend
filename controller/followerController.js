@@ -12,11 +12,16 @@ export const updateFollower = async (req, res) => {
   const myProfile = await db.collection(COL).findOne({ _id: new ObjectId(myId) })
   const otherProfile = await db.collection(COL).findOne({ nickname: nickname })
 
-  if (myProfile.following.includes(nickname)) {
+  console.log(myProfile.following)
+
+  if (myProfile.following && myProfile?.following.includes(nickname)) {
     const followingIndex = myProfile.following.indexOf(nickname)
     myProfile.following.splice(followingIndex, 1)
     const followerIndex = otherProfile.follower.indexOf(myProfile.nickname)
     otherProfile.follower.splice(followerIndex, 1)
+  } else if (!myProfile.following) {
+    myProfile.following = [nickname]
+    otherProfile.follower = [myProfile.nickname]
   } else {
     myProfile.following.push(nickname)
     otherProfile.follower.push(myProfile.nickname)
