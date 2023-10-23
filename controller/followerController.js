@@ -24,7 +24,11 @@ export const updateFollower = async (req, res) => {
     otherProfile.follower = [myProfile.nickname]
   } else {
     myProfile.following.push(nickname)
-    otherProfile.follower.push(myProfile.nickname)
+    if (!otherProfile.follower) {
+      otherProfile.follower = [myProfile.nickname]
+    } else {
+      otherProfile.follower.push(myProfile.nickname)
+    }
   }
 
   await db.collection(COL).updateOne({ _id: new ObjectId(myId) }, { $set: { ...myProfile } })
