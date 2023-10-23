@@ -9,3 +9,10 @@ export const getUserData = async (req, res) => {
   const userData = await db.collection(COL).findOne({ _id: new ObjectId(req.payload.user) })
   res.json(userData)
 }
+
+export const getProfileData = async (req, res) => {
+  const profileId = req.params.id
+  const db = await getDb()
+  const profileData = await db.collection(COL).findOne({ _id: new ObjectId(profileId) })
+  res.json(profileData)
+}
