@@ -6,6 +6,7 @@ export const checkToken = (req, res, next) => {
   if (token === 'null') return res.status(403).end()
   try {
     const payload = verifyToken(token)
+    console.log(payload)
     req.payload = payload
     next()
   } catch (err) {
