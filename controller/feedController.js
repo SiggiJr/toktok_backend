@@ -8,7 +8,6 @@ export const getUserFeed = async (req, res) => {
   const db = await getDb()
   await db.collection('users')
   const userData = await db.collection('users').findOne({ _id: new ObjectId(userId) })
-  console.log(userData)
   const feed = await db
     .collection(COL)
     .find({ nickname: { $in: userData.following } })
