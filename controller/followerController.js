@@ -5,7 +5,9 @@ const COL = 'users'
 
 export const updateFollower = async (req, res) => {
   const nickname = req.params.nickname
-  const myId = req.payload
+  console.log('Nickname:', nickname)
+  const myId = req.payload.user
+  console.log('Payload:', req.payload)
   const db = await getDb()
   const myProfile = await db.collection(COL).findOne({ _id: new ObjectId(myId) })
   const otherProfile = await db.collection(COL).findOne({ nickname: nickname })
