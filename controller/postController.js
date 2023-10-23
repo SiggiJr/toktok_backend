@@ -12,11 +12,20 @@ export const upload = async (req, res) => {
     const cloudinaryResult = await uploadImage(req.file.buffer)
     data.image_url = cloudinaryResult.secure_url
     data.image_id = cloudinaryResult.public_id
-    db.collection(COL).insertOne(data)
+    await db.collection(COL).insertOne(data)
   } catch (err) {
     console.log(err)
   }
-  const post = await db.collection(COL).findOne({ profile_image_id: data.profile_image_id })
+  // const post = await db.collection(COL).findOne({ profile_image_id: data.profile_image_id })
+  // console.log(post)
+  // const userData = await db.collection('users').findOne({ _id: new ObjectId(data.owner) })
+  // if (!userData.posts) {
+  //   console.log(userData.posts)
+  //   userData.posts = [post._id]
+  // } else {
+  //   userData.posts.push(post._id)
+  // }
+  // const update = await db.collection('users').updateOne({ _id: new ObjectId(data.owner) }, { $set: { ...userData } })
   res.json({ id: data.image_id })
 }
 
@@ -25,6 +34,12 @@ export const newPost = async (req, res) => {
   console.log(postData)
   const db = await getDb()
   const post = await db.collection(COL).findOne({ image_id: postData.imageId })
+  const userData = await db.collection('users').findOne({ _id: new ObjectId(post.owner) })
+  if (!userData.posts) {
+    userData.posts = [post._id]
+  } else {
+    userData.posts.push(post._id)
+  }
   console.log(post)
   db.collection(COL).updateOne(
     { image_id: postData.imageId },
@@ -38,6 +53,7 @@ export const newPost = async (req, res) => {
       $unset: { image_id: 1 },
     },
   )
+  const update = await db.collection('users').updateOne({ _id: new ObjectId(post.owner) }, { $set: { ...userData } })
   res.end()
 }
 
