@@ -13,6 +13,7 @@ import { router as authRouter } from './routes/auth.js'
 import { router as postRouter } from './routes/postRoute.js'
 import { router as feedRouter } from './routes/feedRoute.js'
 import { router as searchRouter } from './routes/searchRouter.js'
+import { router as followerRouter } from './routes/followerRouter.js'
 import { register } from './controller/register.js'
 import { checkToken } from './middleware/authMiddleware.js'
 import { verifyToken } from './utils/token.js'
@@ -36,6 +37,7 @@ app.use('/api/auth', upload.none(), authRouter)
 app.use('/api/user', upload.single('profile_image'), usersRouter)
 app.use('/api/feed', feedRouter)
 app.use('/api/search', upload.none(), searchRouter)
+app.use('/api/follower', followerRouter)
 
 // app.post('/api/login')
 
