@@ -41,15 +41,8 @@ export const newPost = async (req, res) => {
     { image_id: postData.image_id },
     {
       $set: { ...postData, owner_image: userData.profile_image_url, comments: [] },
-      // $set: { owner_image: userData.profile_image_url },
     },
   )
-  // db.collection(COL).updateOne(
-  //   { image_id: postData.image_id },
-  //   {
-  //     $unset: { image_id: 1 },
-  //   },
-  // )
   const update = await db.collection('users').updateOne({ _id: new ObjectId(post.owner) }, { $set: { ...userData } })
   res.end()
 }

@@ -1,5 +1,7 @@
 import express from 'express'
 import { getImageUrl, getOnePost, handleLike, newPost, upload } from '../controller/postController.js'
+import { addComment } from '../controller/commentsController.js'
+import { checkToken } from '../middleware/authMiddleware.js'
 
 export const router = new express.Router()
 
@@ -12,3 +14,5 @@ router.get('/imageurl/:imageId', getImageUrl)
 router.post('/likes', handleLike)
 
 router.get('/postdetail/:id', getOnePost)
+
+router.post('/comments/addcomment/:postid', checkToken, addComment)
