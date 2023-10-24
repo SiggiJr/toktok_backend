@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 export const createToken = payload => {
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '60min' })
+  return jwt.sign(payload, process.env.JWT_SECRET)
 }
 
 export const verifyToken = token => {
