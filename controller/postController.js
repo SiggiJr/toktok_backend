@@ -29,6 +29,13 @@ export const upload = async (req, res) => {
   res.json({ id: data.image_id })
 }
 
+export const getImageUrl = async (req, res) => {
+  const imageId = req.params.imageId
+  const db = await getDb()
+  const postData = await db.collection(COL).findOne({ imageId: imageId })
+  res.json({ imageUrl: postData.image_url })
+}
+
 export const newPost = async (req, res) => {
   const postData = req.body
   console.log(postData)
