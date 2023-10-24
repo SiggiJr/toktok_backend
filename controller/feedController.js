@@ -21,3 +21,10 @@ export const getOwnFeed = async (req, res) => {
   const ownFeed = await db.collection(COL).find({ owner: ownId }).toArray()
   res.json(ownFeed)
 }
+
+export const getOtherFeed = async (req, res) => {
+  const userId = req.params.id
+  const db = await getDb()
+  const posts = await db.collection(COL).find({ owner: userId }).toArray()
+  res.json(posts)
+}
