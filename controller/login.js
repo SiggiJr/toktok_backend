@@ -14,3 +14,8 @@ export const login = async (req, res) => {
   })
   res.json({ id: userData._id, nickname: userData.nickname })
 }
+
+export const logout = async (req, res) => {
+  res.clearCookie('token')
+  res.end
+}
