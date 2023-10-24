@@ -14,3 +14,10 @@ export const getUserFeed = async (req, res) => {
     .toArray()
   res.json(feed)
 }
+
+export const getOwnFeed = async (req, res) => {
+  const ownId = req.payload.user
+  const db = await getDb()
+  const ownFeed = await db.collection(COL).find({ owner: ownId }).toArray()
+  res.json(ownFeed)
+}
