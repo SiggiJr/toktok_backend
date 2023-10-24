@@ -1,5 +1,5 @@
 import express from 'express'
-import { getImageUrl, handleLike, newPost, upload } from '../controller/postController.js'
+import { getImageUrl, getOnePost, handleLike, newPost, upload } from '../controller/postController.js'
 
 export const router = new express.Router()
 
@@ -11,4 +11,4 @@ router.get('/imageurl/:imageId', getImageUrl)
 
 router.post('/likes', handleLike)
 
-router.get('postdetail/:id', getOnePost)
+router.get('/postdetail/:id', getOnePost)
