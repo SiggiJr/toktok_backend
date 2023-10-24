@@ -15,6 +15,6 @@ router.post('/login', encrypt, login)
 
 router.get('/userdata', checkToken, getUserData)
 
-router.get('/:id', getProfileData)
-
 router.get('/logout', logout)
+
+router.get('/:id', getProfileData)

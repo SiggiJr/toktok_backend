@@ -12,6 +12,7 @@ export const getUserData = async (req, res) => {
 
 export const getProfileData = async (req, res) => {
   const profileId = req.params.id
+  console.log(profileId)
   const db = await getDb()
   const profileData = await db.collection(COL).findOne({ _id: new ObjectId(profileId) })
   res.json(profileData)
