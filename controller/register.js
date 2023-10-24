@@ -32,7 +32,7 @@ export const createProfile = async (req, res) => {
     db.collection(COL).updateOne(
       { _id: new ObjectId(data.id) },
       {
-        $set: { ...data },
+        $set: { ...data, following: [], follower: [] },
       },
     )
     db.collection(COL).updateOne(

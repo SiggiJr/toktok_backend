@@ -38,9 +38,8 @@ export const getImageUrl = async (req, res) => {
 
 export const newPost = async (req, res) => {
   const postData = req.body
-  console.log(postData)
   const db = await getDb()
-  const post = await db.collection(COL).findOne({ image_id: postData.imageId })
+  const post = await db.collection(COL).findOne({ image_id: postData.image_id })
   const userData = await db.collection('users').findOne({ _id: new ObjectId(post.owner) })
   if (!userData.posts) {
     userData.posts = [post._id]
@@ -49,18 +48,18 @@ export const newPost = async (req, res) => {
   }
   console.log(post)
   db.collection(COL).updateOne(
-    { image_id: postData.imageId },
+    { image_id: postData.image_id },
     {
-      $set: { ...postData },
-      $set: { owner_image: userData.profile_image_url },
+      $set: { ...postData, owner_image: userData.profile_image_url },
+      // $set: { owner_image: userData.profile_image_url },
     },
   )
-  db.collection(COL).updateOne(
-    { image_id: postData.imageId },
-    {
-      $unset: { image_id: 1 },
-    },
-  )
+  // db.collection(COL).updateOne(
+  //   { image_id: postData.image_id },
+  //   {
+  //     $unset: { image_id: 1 },
+  //   },
+  // )
   const update = await db.collection('users').updateOne({ _id: new ObjectId(post.owner) }, { $set: { ...userData } })
   res.end()
 }

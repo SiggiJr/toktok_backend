@@ -6,7 +6,7 @@ const COL = 'posts'
 export const getUserFeed = async (req, res) => {
   const userId = req.payload.user
   const db = await getDb()
-  await db.collection('users')
+  // await db.collection('users')
   const userData = await db.collection('users').findOne({ _id: new ObjectId(userId) })
   const feed = await db
     .collection(COL)
