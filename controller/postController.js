@@ -30,9 +30,9 @@ export const upload = async (req, res) => {
 }
 
 export const getImageUrl = async (req, res) => {
-  const imageId = req.params.imageId
+  const { imageId } = req.params
   const db = await getDb()
-  const postData = await db.collection(COL).findOne({ imageId: imageId })
+  const postData = await db.collection(COL).findOne({ image_id: imageId })
   res.json({ imageUrl: postData.image_url })
 }
 
@@ -65,8 +65,8 @@ export const newPost = async (req, res) => {
 }
 
 export const handleLike = async (req, res) => {
-  const nickname = req.body.nickname
-  const postId = req.body.postId
+  const { nickname } = req.body
+  const { postId } = req.body
   console.log(nickname, postId)
   const db = await getDb()
   const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
