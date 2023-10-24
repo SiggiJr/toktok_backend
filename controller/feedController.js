@@ -12,6 +12,18 @@ export const getUserFeed = async (req, res) => {
     .collection(COL)
     .find({ nickname: { $in: userData.following } })
     .toArray()
+  const profiles = await db
+    .collection('users')
+    .find({ nickname: { $in: userData.following } })
+    .toArray()
+  feed.forEach(post => {
+    profiles.forEach(profile => {
+      if (profile.nickname === post.nickname) {
+        post.profession = profile.profession
+      }
+    })
+  })
+  console.log(feed)
   res.json(feed)
 }
 
