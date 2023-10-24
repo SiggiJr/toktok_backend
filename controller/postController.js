@@ -52,6 +52,7 @@ export const newPost = async (req, res) => {
     { image_id: postData.imageId },
     {
       $set: { ...postData },
+      $set: { owner_image: userData.profile_image_url },
     },
   )
   db.collection(COL).updateOne(
