@@ -10,3 +10,5 @@ router.put('/upload', newPost)
 router.get('/imageurl/:imageId', getImageUrl)
 
 router.post('/likes', handleLike)
+
+router.get('postdetail/:id', getOnePost)

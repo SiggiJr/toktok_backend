@@ -16,16 +16,6 @@ export const upload = async (req, res) => {
   } catch (err) {
     console.log(err)
   }
-  // const post = await db.collection(COL).findOne({ profile_image_id: data.profile_image_id })
-  // console.log(post)
-  // const userData = await db.collection('users').findOne({ _id: new ObjectId(data.owner) })
-  // if (!userData.posts) {
-  //   console.log(userData.posts)
-  //   userData.posts = [post._id]
-  // } else {
-  //   userData.posts.push(post._id)
-  // }
-  // const update = await db.collection('users').updateOne({ _id: new ObjectId(data.owner) }, { $set: { ...userData } })
   res.json({ id: data.image_id })
 }
 
@@ -81,4 +71,11 @@ export const handleLike = async (req, res) => {
   await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
 
   res.json(post)
+}
+
+export const getOnePost = async (req, res) => {
+  const postId = req.params.id
+  const db = await getDb()
+  const postData = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
+  res.json(postData)
 }
