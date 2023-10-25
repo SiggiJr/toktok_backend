@@ -16,6 +16,7 @@ export const addComment = async (req, res) => {
   comment.timestamp = new Date()
   comment.comment_id = uuidv4()
   comment.likes = []
+  comment.replies = []
   post.comments.push(comment)
   await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
   // console.log(post)
@@ -27,7 +28,6 @@ export const handleCommentLike = async (req, res) => {
   const { postId, commentId } = req.body
   const db = await getDb()
   const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
-  console.log(postId)
 
   post.comments.forEach(comment => {
     if (comment.comment_id === commentId && comment.likes.includes(nickname)) {
@@ -41,4 +41,18 @@ export const handleCommentLike = async (req, res) => {
   await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
 
   res.json(post)
+}
+
+export const addReply = async (req, res) => {
+  const { nickname, postId, commentId, reply } = req.body
+  const db = await getDb()
+  const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
+  post.comments.forEach(comment => {
+    if (comment.comment_id === commentId) {
+      const replyData = { nickname, reply, timestamp: new Date() }
+      comment.replies.push(replyData)
+    }
+  })
+  await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { ...post })
+  res.end()
 }
