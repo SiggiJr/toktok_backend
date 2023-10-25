@@ -53,6 +53,7 @@ export const addReply = async (req, res) => {
       comment.replies.push(replyData)
     }
   })
-  await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { ...post })
+  console.log(post.comments[1].replies)
+  await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
   res.end()
 }
