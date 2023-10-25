@@ -6,7 +6,6 @@ const COL = 'posts'
 
 export const upload = async (req, res) => {
   const data = req.body
-  console.log(req.body)
   const db = await getDb()
   try {
     const cloudinaryResult = await uploadImage(req.file.buffer)
@@ -40,7 +39,7 @@ export const newPost = async (req, res) => {
   db.collection(COL).updateOne(
     { image_id: postData.image_id },
     {
-      $set: { ...postData, owner_image: userData.profile_image_url, comments: [] },
+      $set: { ...postData, owner_image: userData.profile_image_url, comments: [], timestamp: new Date() },
     },
   )
   const update = await db.collection('users').updateOne({ _id: new ObjectId(post.owner) }, { $set: { ...userData } })

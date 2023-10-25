@@ -13,6 +13,7 @@ export const addComment = async (req, res) => {
   comment.owner = userId
   comment.timestamp = new Date()
   comment.comment_id = uuidv4()
+  comment.likes = []
   post.comments.push(comment)
   await db.collection('posts').updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
   // console.log(post)
