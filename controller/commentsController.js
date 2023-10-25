@@ -45,6 +45,7 @@ export const handleCommentLike = async (req, res) => {
 
 export const addReply = async (req, res) => {
   const { nickname, postId, commentId, reply, userId } = req.body
+  console.log(userId)
   const db = await getDb()
   const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
   post.comments.forEach(comment => {
@@ -53,7 +54,6 @@ export const addReply = async (req, res) => {
       comment.replies.push(replyData)
     }
   })
-  console.log(post.comments[1].replies)
   await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
   res.end()
 }
