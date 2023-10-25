@@ -11,7 +11,7 @@ export const addComment = async (req, res) => {
   console.log(post)
   comment.owner = userId
   comment.timestamp = new Date()
-  comment.comment_id = crypto.randomUUID
+  comment.comment_id = crypto.randomUUID()
   post.comments.push(comment)
   await db.collection('posts').updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
   // console.log(post)
