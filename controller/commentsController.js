@@ -57,3 +57,15 @@ export const addReply = async (req, res) => {
   await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
   res.end()
 }
+
+export const getComment = async (req, res) => {
+  const { postId, commentId } = req.body
+  const db = await getDb()
+  const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
+  const comment = post.comments.filter(comment => {
+    if (comment.comment_id === commentId) {
+      return comment
+    }
+  })[0]
+  res.json(comment)
+}
