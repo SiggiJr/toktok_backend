@@ -2,20 +2,43 @@ import { ObjectId } from 'mongodb'
 import { getDb } from '../utils/db.js'
 import { v4 as uuidv4 } from 'uuid'
 
+const COL = 'posts'
+
 export const addComment = async (req, res) => {
   const userId = req.payload.user
   const postId = req.params.postid
   console.log(postId)
   const comment = req.body
   const db = await getDb()
-  const post = await db.collection('posts').findOne({ _id: new ObjectId(postId) })
+  const post = await db.collection('COL').findOne({ _id: new ObjectId(postId) })
   console.log(post)
   comment.owner = userId
   comment.timestamp = new Date()
   comment.comment_id = uuidv4()
   comment.likes = []
   post.comments.push(comment)
-  await db.collection('posts').updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
+  await db.collection('COL').updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
   // console.log(post)
   res.end()
+}
+
+export const handleCommentLike = async (req, res) => {
+  const { nickname } = req.body
+  const { postId, commentId } = req.body
+  const db = await getDb()
+  const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
+  console.log(postId)
+
+  post.comments.forEach(comment => {
+    if (comment.comment_id === commentId && comment.likes.includes(nickname)) {
+      const index = comment.likes.indexOf(nickname)
+      comment.likes.splice(index, 1)
+    } else if (comment.comment_id === commentId && !comment.likes.includes(nickname)) {
+      comment.likes.push(nickname)
+    }
+  })
+
+  await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
+
+  res.json(post)
 }
