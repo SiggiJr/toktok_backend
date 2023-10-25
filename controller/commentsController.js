@@ -44,12 +44,12 @@ export const handleCommentLike = async (req, res) => {
 }
 
 export const addReply = async (req, res) => {
-  const { nickname, postId, commentId, reply } = req.body
+  const { nickname, postId, commentId, reply, userId } = req.body
   const db = await getDb()
   const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
   post.comments.forEach(comment => {
     if (comment.comment_id === commentId) {
-      const replyData = { nickname, reply, timestamp: new Date() }
+      const replyData = { owner: userId, nickname, reply, timestamp: new Date() }
       comment.replies.push(replyData)
     }
   })
