@@ -89,11 +89,23 @@ export const setFavoritePosts = async (req, res) => {
   const userId = req.payload.user
   const db = await getDb()
   const userData = await db.collection('users').findOne({ _id: new ObjectId(userId) })
-  if (userData.favorites.incudes(postId)) {
+  if (userData.favorites.includes(postId)) {
     const index = userData.favorites.indexOf(postId)
     userData.favorites.splice(index, 1)
   } else {
     userData.favorites.push(postId)
+  }
+  await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $set: { ...userData } })
+  res.end()
+}
+export const deleteFavoritePost = async (req, res) => {
+  const postId = req.params.postId
+  const userId = req.payload.user
+  const db = await getDb()
+  const userData = await db.collection('users').findOne({ _id: new ObjectId(userId) })
+  if (userData.favorites.includes(postId)) {
+    const index = userData.favorites.indexOf(postId)
+    userData.favorites.splice(index, 1)
   }
   await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $set: { ...userData } })
   res.end()
