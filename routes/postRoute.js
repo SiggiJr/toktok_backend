@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+  deleteFavoritePost,
   getFavoritePosts,
   getImageUrl,
   getOnePost,
@@ -34,3 +35,5 @@ router.post('/comment/getcomment', getComment)
 router.get('/getfavposts', checkToken, getFavoritePosts)
 
 router.get('/setfavposts/:postId', checkToken, setFavoritePosts)
+
+router.get('/deletefav/:postId', checkToken, deleteFavoritePost)
