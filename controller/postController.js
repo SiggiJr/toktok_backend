@@ -71,3 +71,19 @@ export const getOnePost = async (req, res) => {
   const postData = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
   res.json(postData)
 }
+
+export const getFavoritePosts = async (req, res) => {
+  const userId = req.payload.user
+  // const db = await
+  res.end()
+}
+
+export const setFavoritePosts = async (req, res) => {
+  const postId = req.params.postId
+  const userId = req.payload.user
+  const db = await getDb()
+  const userData = await db.collection('users').findOne({ _id: new ObjectId(userId) })
+  userData.favorites.push(postId)
+  await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $set: { ...userData } })
+  res.end()
+}

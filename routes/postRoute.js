@@ -1,5 +1,13 @@
 import express from 'express'
-import { getImageUrl, getOnePost, handleLike, newPost, upload } from '../controller/postController.js'
+import {
+  getFavoritePosts,
+  getImageUrl,
+  getOnePost,
+  handleLike,
+  newPost,
+  setFavoritePosts,
+  upload,
+} from '../controller/postController.js'
 import { addComment, addReply, getComment, handleCommentLike } from '../controller/commentsController.js'
 import { checkToken } from '../middleware/authMiddleware.js'
 
@@ -22,3 +30,7 @@ router.post('/comments/like', handleCommentLike)
 router.post('/comment/reply', addReply)
 
 router.post('/comment/getcomment', getComment)
+
+router.get('/getfavposts', checkToken, getFavoritePosts)
+
+router.get('/setfavposts/:postId', checkToken, setFavoritePosts)
