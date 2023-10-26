@@ -7,11 +7,9 @@ const COL = 'posts'
 export const addComment = async (req, res) => {
   const userId = req.payload.user
   const postId = req.params.postid
-  console.log('postId', postId)
   const comment = req.body
   const db = await getDb()
   const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
-  console.log('Post', post)
   comment.owner = userId
   comment.timestamp = new Date()
   comment.comment_id = uuidv4()
@@ -19,7 +17,6 @@ export const addComment = async (req, res) => {
   comment.replies = []
   post.comments.push(comment)
   await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
-  // console.log(post)
   res.end()
 }
 
