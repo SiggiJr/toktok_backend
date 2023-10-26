@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
-import { getDb } from '../utils/db.js'
 import { v4 as uuidv4 } from 'uuid'
+import { getDb } from '../utils/db.js'
 
 const COL = 'posts'
 
@@ -62,10 +62,10 @@ export const getComment = async (req, res) => {
   const { postId, commentId } = req.body
   const db = await getDb()
   const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
-  const comment = post.comments.filter(comment => {
+  const commentData = post.comments.filter(comment => {
     if (comment.comment_id === commentId) {
       return comment
     }
   })[0]
-  res.json(comment)
+  res.json(commentData)
 }
