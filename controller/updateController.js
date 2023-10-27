@@ -89,9 +89,14 @@ export const updateProfile = async (req, res) => {
     },
   )
 
+  db.collection('users').updateOne(
+    { _id: new ObjectId(userId) },
+    {
+      $unset: { id: 1 },
+    },
+  )
   try {
     if (req.file) {
-      console.log('Ich hab nen Bild')
       const cloudinaryResult = await uploadImage(req.file.buffer)
       await db
         .collection('users')

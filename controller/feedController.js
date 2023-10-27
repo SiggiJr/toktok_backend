@@ -11,6 +11,7 @@ export const getUserFeed = async (req, res) => {
   const feed = await db
     .collection(COL)
     .find({ nickname: { $in: userData.following } })
+    .sort({ timestamp: -1 })
     .toArray()
   const profiles = await db
     .collection('users')
@@ -23,20 +24,19 @@ export const getUserFeed = async (req, res) => {
       }
     })
   })
-  console.log(feed)
   res.json(feed)
 }
 
 export const getOwnFeed = async (req, res) => {
   const ownId = req.payload.user
   const db = await getDb()
-  const ownFeed = await db.collection(COL).find({ owner: ownId }).toArray()
+  const ownFeed = await db.collection(COL).find({ owner: ownId }).sort({ timestamp: -1 }).toArray()
   res.json(ownFeed)
 }
 
 export const getOtherFeed = async (req, res) => {
   const userId = req.params.id
   const db = await getDb()
-  const posts = await db.collection(COL).find({ owner: userId }).toArray()
+  const posts = await db.collection(COL).find({ owner: userId }).sort({ timestamp: -1 }).toArray()
   res.json(posts)
 }
