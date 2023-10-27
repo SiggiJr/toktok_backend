@@ -46,6 +46,28 @@ export const newPost = async (req, res) => {
   res.end()
 }
 
+export const deletePost = async (req, res) => {
+  try {
+    const postId = req.params.id
+    const db = await getDb()
+    const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' })
+    }
+    await db.collection(COL).deleteOne({ _id: new ObjectId(postId) })
+    const userData = await db.collection('users').findOne({ _id: new ObjectId(post.owner) })
+    if (userData.posts.includes(postId)) {
+      const index = userData.posts.indexOf(postId)
+      userData.posts.splice(index, 1)
+    }
+    await db.collection('users').updateOne({ _id: new ObjectId(post.owner) }, { $set: { ...userData } })
+    res.status(200).json({ message: 'Post deleted successfully' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
 export const handleLike = async (req, res) => {
   const { nickname } = req.body
   const { postId } = req.body
@@ -61,7 +83,6 @@ export const handleLike = async (req, res) => {
     post.likes.push(nickname)
   }
   await db.collection(COL).updateOne({ _id: new ObjectId(postId) }, { $set: { ...post } })
-
   res.json(post)
 }
 

@@ -38,17 +38,4 @@ app.use('/api/user', upload.single('profile_image'), usersRouter)
 app.use('/api/feed', feedRouter)
 app.use('/api/search', upload.none(), searchRouter)
 app.use('/api/follower', followerRouter)
-
-// app.post('/api/login')
-
-// app.post('api/upload')
-// app.post('/api/feed')
-
-// app.post('api/search')
-
-// app.post('api/profile')
-// app.post('api/me')
-
-// app.put('api/privacy')
-
 app.listen(PORT, () => console.log(PORT))
