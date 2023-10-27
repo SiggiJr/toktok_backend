@@ -40,7 +40,8 @@ export const deleteComment = async (req, res) => {
 
 export const handleCommentLike = async (req, res) => {
   const { nickname } = req.body
-  const { postId, commentId } = req.body
+  const { commentId } = req.body
+  const postId = req.body.postId.postId
   const db = await getDb()
   const post = await db.collection(COL).findOne({ _id: new ObjectId(postId) })
 
